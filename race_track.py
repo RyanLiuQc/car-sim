@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import math
-from scipy.spatial import KDTree
+
 
 import bicycle_model
 
@@ -11,8 +11,7 @@ class RaceTrack:
     # the curves are polylines 
     def __init__(
             self, 
-            outerCurve: list[tuple[int,int]], # list of points (x,y)
-            # centerCurve: list[tuple[int,int]], 
+            outerCurve: list[tuple[int,int]], # list of points (x,y) 
             innerCurve: list[tuple[int,int]]
             ):
         
@@ -137,13 +136,8 @@ def build_ellipse_polyline( a: int,b: int) -> list[tuple[int,int]]:
 
 if __name__ == "__main__":
     outerCurve = build_ellipse_polyline(20,10)
-    # centerCurve = build_ellipse_polyline(15,7)
     innerCurve = build_ellipse_polyline(10,5)
-    # xs, ys = zip(*outerCurve)
 
-
-    # plt.plot(xs, ys)
-    # plt.show()
     environment = RaceTrack(outerCurve, innerCurve)
     environment.visualize()
 
