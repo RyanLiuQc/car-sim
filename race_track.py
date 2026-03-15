@@ -23,26 +23,13 @@ class RaceTrack:
         self.centerCurve = self._get_centerCurve()
 
     def _get_centerCurve(self) -> list[tuple[int,int]]:
-        tree = KDTree(self.outerCurve)
         centerCurve = []
-        
-        # for every point in inner, find its nearest neighbor out of all the outer points
-        # calculate the the center point
-        for pt in self.innerCurve:
-            dist, idx = tree.query(pt) # idx = index of the outer point closest to pt
-            q = self.outerCurve[idx]
-            
-            # calculate center point between inner and outer point
-            x_center = (pt[0] + q[0])/2 
-            y_center = (pt[1] + q[1])/2
-            
-            if pt[1] == 0:
-                print("x1x2: ",pt[0], q[0])
-                print("y1y2: ",pt[1], q[1])
-                print(x_center, y_center)
 
-            centerCurve.append((x_center, y_center))
-        
+        # 1 for every find point in inner, tangent
+
+        # 2 find their normal vector (2 side possible) check both side so that it generalizes to non-looping tracks
+
+        # 3 for every outer points, ray casting.
         
         return centerCurve
     
