@@ -25,12 +25,79 @@ class RaceTrack:
     def _get_centerCurve(self) -> list[tuple[int,int]]:
         centerCurve = []
 
-        # 1 for every find point in inner, tangent
+        # transform to numpy array
+        inner = np.array(self.innerCurve)
+        outer = np.array(self.outerCurve)
 
-        # 2 find their normal vector (2 side possible) check both side so that it generalizes to non-looping tracks
+        len_inner = len(inner)
+        len_outer = len(outer)
+        for i in range(len_inner):
+            # get tangent:
+            prev_pt = inner[i-1]
+            next_pt = inner[(i+1) % len_inner]
 
-        # 3 for every outer points, ray casting.
-        
+            p_i = inner[i]
+            best_t = float('inf') # initial shortest distance along normal b/w inner and outer
+            best_intersection = None
+
+            d_in = next_pt - prev_pt # directional vector of inner
+
+            length_d_in = np.linalg.norm(d_in)
+
+            if length_d_in == 0: continue
+            unit_tangent_inner = d_in / length_d_in
+
+            # get normal 2 possible normal 
+            # we might not have inner and outer in non looping tracks 
+            # so find the normal that points to the other curve
+            unit_normal_CCW = np.array([-unit_tangent_inner[1], unit_tangent_inner[0]]) # counter clock wise 
+            unit_normal_CW = -unit_normal_CCW
+
+
+            
+            for j in range(len_outer):
+                a = outer[j]
+                b = outer[(j+1) % len_outer] # prevent index out of bound
+                v = b - a # segment vector of outer 
+
+                w = a - p_i #vector from inner pt to outer
+
+                w_cross_v = w[0]*v[1] - w[1]*v[0]
+
+                
+                # try both normal to find the one that outputs the shortest distance
+                for n in (unit_normal_CCW, unit_normal_CW): 
+                    n_cross_v = n[0]*v[1] - n[1]*v[0]
+                    
+                    if abs(n_cross_v) < 1e-8:
+                        continue
+
+                    # distance between 2 segment
+                    t = w_cross_v / n_cross_v 
+
+                    w_cross_n = w[0]*n[1] - w[1]*n[0]
+
+                    # percentage on outer segment where intersection of 2 lines meet
+                    u = w_cross_n / n_cross_v
+
+                    # verify that distance is positive and intersection happens within the segment
+                    if t>0 and 0 <= u <= 1:
+                        if t < best_t:
+                            # update distance and intersection segment
+                            best_t = t
+                            best_intersection = p_i + best_t*n
+                    
+            # update best intersection
+            if best_intersection is not None:
+                midpoint = (p_i + best_intersection) / 2
+                centerCurve.append((midpoint[0], midpoint[1]))
+            else:
+                pass
+                # fallback to ensure that the number of points in centerCurve is the same as
+                # number of points in inner curve
+                # centerCurve.append((p_i[0], p_i[1]))
+
+        centerCurve.append(centerCurve[0])
         return centerCurve
     
     def visualize(self):
