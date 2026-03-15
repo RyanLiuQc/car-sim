@@ -1,5 +1,3 @@
-# car-sim
-
 # Car Simulator
 
 This repository contains a Python-based simulation environment for a race car navigating a track. It utilizes a kinematic bicycle model and Frenet coordinates to simulate vehicle dynamics and path planning.
