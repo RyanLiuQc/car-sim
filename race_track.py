@@ -20,6 +20,16 @@ class RaceTrack:
         
         # get centerCurve
         self.centerCurve = self._get_centerCurve()
+        
+        self.s = self._get_list_of_all_path_distance_at_idx_of_corresponding_point()
+
+    def _get_list_of_all_path_distance_at_idx_of_corresponding_point(self) -> list[float]:
+        l = []
+        s = 0
+        for i in range(len(self.centerCurve)):
+            p = self.centerCurve[i]
+            d = math.sqrt(p[0]**2 + p[1]**2)            
+        return l
 
     def _get_centerCurve(self) -> list[tuple[int,int]]:
         centerCurve = []
