@@ -23,6 +23,7 @@ class RaceTrack:
         
         self.s = self._get_list_of_all_path_distance_at_idx_of_corresponding_point()
 
+    # not that useful?
     def _get_list_of_all_path_distance_at_idx_of_corresponding_point(self) -> list[float]:
         l = []
         s = 0
