@@ -32,6 +32,7 @@ class RaceTrack:
             d = math.sqrt(p[0]**2 + p[1]**2)            
         return l
 
+    # this generalizes to any 2 polylines that do not intersect
     def _get_centerCurve(self) -> list[tuple[int,int]]:
         centerCurve = []
 
